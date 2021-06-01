@@ -1,6 +1,6 @@
 {
   "name": "@paar-it-gmbh/pm2-syslog-logger",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "dependencies": {
     "pm2": "*",
     "posix": "^4.2.0"
@@ -11,7 +11,9 @@
   "apps": [
     {
       "name": "pm2-syslog-logger",
-      "script": "app.js"
+      "script": "app.js",
+      "error_file": "/dev/null",
+      "out_file": "/dev/null"
     }
   ],
   "author": "Tatsuya Koishi",
