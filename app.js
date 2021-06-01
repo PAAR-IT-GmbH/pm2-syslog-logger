@@ -1,17 +1,17 @@
-'use strict'
 const pm2 = require('pm2')
 const posix = require('posix')
 
+posix.openlog("pm2", {ndelay: true, pid: false}, 'user')
+
 pm2.launchBus((err, bus) => {
   bus.on('log:err', data => {
-    posix.openlog(data.process.name, {ndelay: true, pid: true}, 'user')
-    posix.syslog('crit', data.data)
-    posix.closelog()
+    posix.syslog('crit', '['+data.process.name+'](' + data.process.pm_id + ") " + data.data)
   })
-
   bus.on('log:out', data => {
-    posix.openlog(data.process.name, {ndelay: true, pid: true}, 'user')
-    posix.syslog('info', data.data)
-    posix.closelog()
+    posix.syslog('info', '['+data.process.name+'](' + data.process.pm_id + ") " + data.data)
   })
+})
+
+process.on('exit', function () {
+  posix.closelog();
 })
